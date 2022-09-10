@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <title>CardiacSaver</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Cardiacsaver</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/form">Predictor</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">Attributes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/model">Our Model</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  <form data-aos="fade-in" data-aos-duration="1500" action="{% url 'results' %}" id="post-form">
+    {% csrf_token %}
+    <div class="container">
+      <div id="ui">
+        <h1 class="text-center" style="color: white;">Heart Attack Predictor</h1>
+        <div class="form-group">
+          <label for="usr" class="ui-label">Enter your age:</label>
+          <input required type="text" class="form-control" name="age" id="usr">
+        </div>
+        <label class="ui-label">Select your gender (Male is 1, Female is 0):</label>
+        <select name="sex" class="form-control" required>
+          <option>0</option>
+          <option>1</option>
+        </select>
+        <div class=" form-group range-wrap" style="width: 30%;">
+          <label for="usr" class="mt-3 ui-label">Select your level of chest pain:</label>
+          <input required name="cp" type="range" class="range" min="0" max="4" value="0">
+          <output class="bubble"></output>
+        </div>
+        <div class="form-group">
+          <label for="usr" class="mt-4 ui-label">Enter your resting heart rate:</label>
+          <input required type="text" class="form-control" name="resting-bps" id="usr">
+        </div>
+        <div class="form-group">
+          <label for="usr" class="ui-label">Enter your cholesterol:</label>
+          <input required type="text" class="form-control" name="chol" id="usr">
+        </div>
+        <label class="ui-label">Select your fasting blood sugar: (0 if unknown, 1 if known)</label>
+        <select required name="fasting-blood-sugar" class="form-control">
+          <option>0</option>
+          <option>1</option>
+        </select>
+        <label class="mt-3 ui-label">Select your resting ECG (0 if unknown, 1 if known):</label>
+        <select required name="resting-ecg" class="form-control mt-3">
+          <option>0</option>
+          <option>1</option>
+        </select>
+        <div class="form-group">
+          <label for="usr" class="mt-3 ui-label">Enter your maximum heart rate achieved:</label>
+          <input required type="text" class="form-control" name="thalach" id="usr">
+        </div>
+        <label class="ui-label">Select your exercise induced angina: (1 for stable, 0 for unstable)</label>
+        <select required name="exang" class="form-control mt-3">
+          <option>0</option>
+          <option>1</option>
+        </select>
+        <div class=" form-group range-wrap mt-3" style="width: 30%;">
+          <label for="usr" class="ui-label">Enter your Stress Test related change due to exercise: (0-4, enter 0 if unknown)</label>
+          <input required name="oldpeak" type="range" class="range" min="0" step="0.1" max="4" value="0">
+          <output class="bubble"></output>
+        </div>
+        <div class=" form-group range-wrap" style="width: 30%;">
+          <label for="usr" class="mt-4 ui-label">Select your Stress Test related slope: (enter 1 if unknown)</label>
+          <input required name="slope" type="range" class="range" min="0" max="3" value="0">
+          <output class="bubble"></output>
+        </div>
+        <div class=" form-group range-wrap" style="width: 30%;">
+          <label for="usr" class="mt-4 ui-label">Select number of major vessels colored by fluoroscopy: (enter 0 if unknown)</label>
+          <input required name="ca" type="range" class="range" min="0" max="4" value="0">
+          <output class="bubble"></output>
+        </div>
+        <div class=" form-group range-wrap" style="width: 30%;">
+          <label for="usr" class="mt-4 ui-label">Select any heart conditions: (enter 3 if stable, 6 if fixed defect, 7 if reversable defect)</label>
+          <input required name="thal" type="range" class="range" min="0" max="7" value="0">
+          <output class="bubble"></output>
+        </div>
+        <input class=" mt-5 btn btn-success btn-lg btn-block" type="submit" name="submit" value="Submit">
+      </div>
+    </div>
+  </form>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+
+    <!-- Option 2: jQuery, Popper.js, and Bootstrap JS
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    -->
+    <script>
+      const allRanges = document.querySelectorAll(".range-wrap");
+allRanges.forEach(wrap => {
+      const range = wrap.querySelector(".range");
+      const bubble = wrap.querySelector(".bubble");
+
+      range.addEventListener("input", () => {
+        setBubble(range, bubble);
+      });
+      setBubble(range, bubble);
+    });
+
+    function setBubble(range, bubble) {
+      const val = range.value;
+      const min = range.min ? range.min : 0;
+      const max = range.max ? range.max : 100;
+      const newVal = Number(((val - min) * 100) / (max - min));
+      bubble.innerHTML = val;
+
+      // Sorta magic numbers based on size of the native UI thumb
+      bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+    }
+    </script>
+  </body>
+</html>
+<style>
+  .navbar{
+  text-transform: uppercase;
+  font-weight: 700px;
+  font-size: .9rem;
+  letter-spacing: .1rem;
+  background-color: rgba(0, 0, 0, 0.6)!important;
+}
+
+.navbar-nav li{
+  padding-right: .7rem;
+}
+
+.navbar-dark .navbar-nav .nav-link{
+  color: white;
+  padding-top: .8rem;
+}
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .nav-link:hover{
+  color: #1ebba3;
+}
+#ui{
+  background-color: #333;
+  padding: 30px;
+  margin-top: 70px;
+  border-radius: 10px;
+  opacity: 0.95;
+  margin-bottom: 30px;
+}
+.ui-label{
+  color: white;
+}
+.range-wrap {
+  position: relative;
+}
+.range {
+  width: 100%;
+}
+.bubble {
+  background: #1ebba3;
+  color: white;
+  padding: 4px 12px;
+  position: absolute;
+  border-radius: 4px;
+  transform: translate(-50%, 80%);
+}
+.bubble::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #1ebba3;
+  top: -1px;
+  left: 50%;
+}
+body{
+  background-image: url("https://static.wixstatic.com/media/2a9863_c41c1a403e7445d2b1a8a0d02826b48a~mv2.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+}
+</style>
